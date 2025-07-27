@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Jarvis AI Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #111 0%, #222 100%);
+            color: #fff;
+            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .header {
+            background: rgba(34,34,34,0.95);
+            padding: 2.2rem 2rem 1.2rem 2rem;
+            text-align: center;
+            font-size: 2.1rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            box-shadow: 0 2px 16px #0005;
+            border-radius: 18px 18px 0 0;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            max-width: 480px;
+        }
+        .container {
+            background: rgba(24,24,24,0.98);
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 8px 32px #000a;
+            text-align: center;
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .welcome-text {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+        }
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        input[type="text"] {
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            width: 90%;
+            font-size: 1.13rem;
+            background: #232323;
+            color: #fff;
+            outline: none;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px #0002;
+        }
+        input[type="text"]:focus {
+            background: #181818;
+        }
+        button {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #fff 60%, #eaeaea 100%);
+            color: #111;
+            font-size: 1.13rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 8px #0002;
+        }
+        button:hover {
+            background: #eaeaea;
+            color: #000;
+        }
+        @media (max-width: 600px) {
+            .header, .container {
+                max-width: 98vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Welcome to Jarvis AI Chatbot
+    </div>
+    <div class="container">
+        <div class="welcome-text">Enter your name to begin chatting with Jarvis, your personal AI assistant.</div>
+        <form method="post">
+            <input type="text" name="name" placeholder="Your name" required autofocus>
+            <button type="submit">Start Chatting</button>
+        </form>
+    </div>
+</body>
+</html>

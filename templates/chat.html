@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis AI Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #111 0%, #222 100%);
+            color: #fff;
+            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .header {
+            background: rgba(34,34,34,0.95);
+            padding: 1.5rem 2rem 1rem 2rem;
+            text-align: center;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            box-shadow: 0 2px 16px #0005;
+            z-index: 2;
+        }
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 2rem 0 1rem 0;
+            background: none;
+        }
+        .chat-box {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(24,24,24,0.98);
+            border-radius: 18px;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 8px 32px #000a;
+            overflow-y: auto;
+            min-height: 340px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: box-shadow 0.3s;
+        }
+        .message {
+            margin: 0.5rem 0;
+            padding: 0.9rem 1.2rem;
+            border-radius: 14px;
+            max-width: 80%;
+            word-break: break-word;
+            font-size: 1.08rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .user {
+            background: linear-gradient(90deg, #fff 60%, #eaeaea 100%);
+            color: #111;
+            align-self: flex-end;
+            box-shadow: 0 2px 8px #0002;
+            border-bottom-right-radius: 2px;
+        }
+        .bot {
+            background: linear-gradient(90deg, #333 60%, #444 100%);
+            color: #fff;
+            align-self: flex-start;
+            box-shadow: 0 2px 8px #0003;
+            border-bottom-left-radius: 2px;
+        }
+        .input-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 10px 0 0 10px;
+            font-size: 1.13rem;
+            background: #232323;
+            color: #fff;
+            outline: none;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px #0002;
+        }
+        input[type="text"]:focus {
+            background: #181818;
+        }
+        button {
+            padding: 0.9rem 2.2rem;
+            border: none;
+            border-radius: 0 10px 10px 0;
+            background: linear-gradient(90deg, #fff 60%, #eaeaea 100%);
+            color: #111;
+            font-size: 1.13rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 8px #0002;
+        }
+        button:hover {
+            background: #eaeaea;
+            color: #000;
+        }
+        /* Scrollbar styling */
+        .chat-box::-webkit-scrollbar {
+            width: 8px;
+            background: #232323;
+        }
+        .chat-box::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 8px;
+        }
+        @media (max-width: 700px) {
+            .chat-box, .input-row {
+                max-width: 98vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Jarvis AI Chatbot - Hello, {{ name }}!
+    </div>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <!-- Messages will appear here -->
+        </div>
+        <form class="input-row" id="chat-form" autocomplete="off">
+            <input type="text" id="user-input" placeholder="Type your message..." required autofocus>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+        let messages = [
+            { role: 'system', content: 'You are a helpful assistant.' }
+        ];
+
+        function appendMessage(content, sender, animate=true) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message ' + sender;
+            if (sender === 'bot' && animate) {
+                // Typing animation for bot
+                let i = 0;
+                function typeChar() {
+                    if (i <= content.length) {
+                        msgDiv.textContent = content.slice(0, i);
+                        i++;
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                        setTimeout(typeChar, 14 + Math.random()*30);
+                    }
+                }
+                typeChar();
+            } else {
+                msgDiv.textContent = content;
+            }
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function showBotThinking() {
+            const dots = document.createElement('div');
+            dots.className = 'message bot';
+            dots.innerHTML = '<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
+            dots.style.letterSpacing = '0.3em';
+            chatBox.appendChild(dots);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            // Animate the dots
+            let step = 0;
+            const dotEls = dots.querySelectorAll('.dot');
+            const interval = setInterval(() => {
+                dotEls.forEach((el, idx) => {
+                    el.style.opacity = (step % 3 === idx) ? '1' : '0.3';
+                });
+                step++;
+            }, 300);
+            return {el: dots, interval};
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = userInput.value.trim();
+            if (!text) return;
+            appendMessage(text, 'user');
+            messages.push({ role: 'user', content: text });
+            userInput.value = '';
+            const thinking = showBotThinking();
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages })
+                });
+                const data = await res.json();
+                clearInterval(thinking.interval);
+                chatBox.removeChild(thinking.el);
+                if (data.reply) {
+                    appendMessage(data.reply, 'bot', true);
+                    messages.push({ role: 'assistant', content: data.reply });
+                } else {
+                    appendMessage('Error: ' + (data.error || 'Unknown error'), 'bot', false);
+                }
+            } catch (err) {
+                clearInterval(thinking.interval);
+                chatBox.removeChild(thinking.el);
+                appendMessage('Error: ' + err, 'bot', false);
+            }
+        });
+    </script>
+</body>
+</html>
